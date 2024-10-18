@@ -7,11 +7,27 @@
   function onArchiveModeChanged(newMode) {
     archiveMode = newMode
   }
+
+import ArchiveBoxArchiver from "../common/services/archiver"
+import SyncedConfig from "../common/services/config"
+import ChromeSyncStorage from "../common/services/storage"
+import DomainList from "../common/services/domainList"
+import IArchiver from "../common/interfaces/archiver"
+  function archiveNow() {
+    chrome.tabs.query({active: true, currentWindow: true}, async tabs => {
+      const storage = new ChromeSyncStorage()
+      const config = new SyncedConfig(storage)
+      const domainList = new DomainList(storage)
+      const archiver = new ArchiveBoxArchiver(domainList, config)
+      await archiver.archiveImmediately(tabs[0].url)
+    });
+  }
 </script>
 
 <div class="main">
   <Config {onArchiveModeChanged} />
   <hr>
+  <button on:click="{archiveNow}">Archive now</button>
   <DomainLists {archiveMode} />
 </div>
 

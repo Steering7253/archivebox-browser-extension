@@ -3,7 +3,8 @@
     "history",
     "contextMenus",
     "storage",
-    "alarms"
+    "alarms",
+    "activeTab"
   ],
 
   "optional_permissions": [
