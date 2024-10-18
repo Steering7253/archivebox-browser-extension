@@ -61,40 +61,6 @@ async function main() {
       await archiver.submitQueue()
     }
   })
-
-  chrome.contextMenus.create({
-    id: "archivePage",
-    title: "Archive Current Page",
-    contexts: [ "all" ],
-    onclick: async (info) => {
-      await archiver.archiveImmediately(info.pageUrl)
-    }
-  })
-
-  chrome.contextMenus.create({
-    id: "addDomain",
-    title: "Add Current Domain to List",
-    contexts: [ "all" ],
-    onclick: async (info) => {
-      const currentList = await config.get(GlobalConfigKey.ArchiveMode, "allowlist")
-
-      const url = new URL(info.pageUrl)
-      await domainList.addEntry({
-        id: v4(),
-        type: "domain",
-        value: url.host
-      }, currentList as ListType)
-    }
-  })
-
-  chrome.contextMenus.create({
-    id: "archiveLink",
-    title: "Archive Link",
-    contexts: [ "link" ],
-    onclick: async (info) => {
-      await archiver.archiveImmediately(info.linkUrl)
-    }
-  })
 }
 
 main()
